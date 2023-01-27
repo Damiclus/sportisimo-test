@@ -1,0 +1,31 @@
+parameters:
+    production: false
+    cache: true
+    assets:
+        css: 20220203
+        js: 20220203
+
+application:
+	errorPresenter: Front:Error
+	mapping:
+	    *: app\modules\*\*Presenter
+
+session:
+	expiration: 14 days
+
+database:
+    default:
+        dsn: 'mysql:host=database;dbname=sportisimo'
+        user: sportisimo
+        password: "sportisimo"
+
+
+services:
+	router: app\router\RouterFactory::createRouter()
+
+    #Auth
+	- app\utils\BasicAuth
+
+	# Repositories
+	- app\repository\BrandRepository
+	- app\repository\UserRepository
