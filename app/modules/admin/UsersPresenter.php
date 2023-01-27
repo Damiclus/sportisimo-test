@@ -8,6 +8,7 @@
     use app\repository\BrandRepository;
     use app\repository\UserRepository;
     use Nette\Application\UI\Form;
+    use Nette\Database\UniqueConstraintViolationException;
     use Nette\Utils\DateTime;
     use Nette\Utils\Paginator;
     use utils\Strings;
@@ -84,14 +85,18 @@
             if($values->password) {
                 $data['user_password'] = password_hash($values->password, PASSWORD_DEFAULT);
             }
-            if($this->user) {
-                $this->userRepository->updateUser($this->user->id, $data);
-                $this->flashMessage("User {$this->user->name} was updated!");
-            } else {
-                $this->userRepository->putUser($data['user_name'], $data['user_email'], $data['user_password']);
-                $this->flashMessage("User $values->name was created!");
+            try {
+                if($this->user) {
+                    $this->userRepository->updateUser($this->user->id, $data);
+                    $this->flashMessage("User {$this->user->name} was updated!");
+                } else {
+                    $this->userRepository->putUser($data['user_name'], $data['user_email'], $data['user_password']);
+                    $this->flashMessage("User $values->name was created!");
+                    $this->redirect('Users:default');
+                }
+            } catch (UniqueConstraintViolationException $e) {
+                $this->flashMessage("Some user has the same email '{$values->email}'");
             }
 
-            $this->redirect('Users:default');
         }
     }

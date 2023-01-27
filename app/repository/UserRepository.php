@@ -3,6 +3,7 @@
     namespace app\repository;
 
     use app\entities\User;
+    use Nette\Database\UniqueConstraintViolationException;
 
     class UserRepository extends BaseRepository
     {
@@ -76,6 +77,7 @@
          * @param string $name
          * @param string $email
          * @param string $password
+         * @throws UniqueConstraintViolationException
          * @return void
          */
         public function putUser(string $name, string $email, string $password): void
@@ -92,6 +94,7 @@
         /**
          * @param int $id
          * @param array $diff
+         * @throws UniqueConstraintViolationException
          * @return void
          */
         public function updateUser(int $id, array $diff): void
