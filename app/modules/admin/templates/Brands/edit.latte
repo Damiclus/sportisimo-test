@@ -1,0 +1,20 @@
+{block title}
+    Brand
+{/block title}
+
+{block content}
+<header>
+    {include "../Components/mainHeader.latte", activeNav: "brands"}
+</header>
+
+<div class="container">
+    <div class="py-3">
+        <H1 class="pageHeader">Brand</H1>
+        <div class="row">
+            <div class="col">
+                {control brandForm}
+            <div>
+        </div>
+    </div>
+</div>
+{/block content}

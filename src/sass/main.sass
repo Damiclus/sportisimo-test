@@ -1,0 +1,29 @@
+@import "../../node_modules/bootstrap/scss/bootstrap"
+
+
+@import "forms"
+
+.page-title
+  font-size: 2rem
+
+.link
+  min-width: 165px
+
+  &:before
+    font-weight: 900
+    padding-right: .8rem
+
+  &.active
+    background-color: $success
+    color: $white
+
+  &:after
+    &:hover
+      background: $white
+      border-color: $success
+      color: $success
+
+
+@import "global"
+@import "navbar"
+@import "tables"

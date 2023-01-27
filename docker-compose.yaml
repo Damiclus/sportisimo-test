@@ -1,0 +1,79 @@
+version: '3.7'
+
+services:
+  nginx :
+    container_name: nginx
+    build:
+      context: .
+      dockerfile : docker/nginx.Dockerfile
+    volumes :
+      - ./docker/Nginx/:/etc/nginx/conf.d
+      - ./docker/PHP/index.php:/var/www/html/index.php
+      - ./logs/nginx/:/var/log/nginx/
+      - ./app:/var/www/sportisimo/app
+      - ./app/src:/var/www/sportisimo/src
+    ports :
+      - "80:80"
+      - "443:443"
+    depends_on :
+      - php-sportisimo
+      - database
+    networks :
+      - app-network
+
+  php-sportisimo:
+    container_name: php
+    build:
+      context: .
+      network: host
+      dockerfile : docker/php.Dockerfile
+    volumes :
+      - ./docker/PHP/index.php:/var/www/html/index.php
+      - ./docker/PHP/php.ini:/usr/local/etc/php/php.ini
+      - ./logs/PHP/:/var/www/sportisimo/log
+      - ./app:/var/www/sportisimo/app
+      - ./src:/var/www/sportisimo/src
+
+    expose:
+      - "9000"
+    depends_on :
+      - database
+    networks :
+      - app-network
+
+  adminer :
+    container_name : adminer
+    image : adminer:latest
+    restart : always
+    environment :
+      ADMINER_DEFAULT_SERVER : database
+      ADMINER_DEFAULT_DB_DRIVER : mysql
+      ADMINER_DESIGN : nette #custom
+    expose :
+      - "8080"
+    depends_on :
+      - database
+    networks :
+      - app-network
+
+  database:
+    container_name: database
+    image: mariadb:10.4-focal
+    restart: on-failure
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: a_secret_password
+      MYSQL_DATABASE: sportisimo
+      MYSQL_USER: sportisimo
+      MYSQL_PASSWORD: sportisimo
+    volumes :
+      - ./database/data:/var/lib/mysql
+      - ./logs/db:/var/log/mysql
+    networks :
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

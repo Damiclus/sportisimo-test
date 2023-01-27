@@ -1,0 +1,38 @@
+{block title}
+    Dashboard
+{/block title}
+
+{block content}
+<header>
+    {include "../Components/mainHeader.latte", activeNav: "dashboard"}
+</header>
+
+<div class="container">
+    <div class="py-3 mt-2">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card mt-4">
+                    <div class="card-header">
+                            <i class="fa-solid fa-briefcase"></i> <strong>Users</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="h3">{$countUsers}</div>
+                        <a class="text-primary" n:href="Users:default">List all users</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="fa-solid fa-briefcase"></i> <strong>Brands</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="h3">{$countBrands}</div>
+                        <a class="text-primary" n:href="Users:default">List all brands</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block content}

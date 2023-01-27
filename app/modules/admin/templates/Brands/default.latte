@@ -1,0 +1,94 @@
+{block title}
+    List of brands
+{/block title}
+
+{block content}
+<header>
+    {include "../Components/mainHeader.latte", activeNav: "brands"}
+</header>
+
+<div class="container">
+    <div class="py-3">
+        <H1 class="pageHeader">Brand List</H1>
+        <div class="row">
+            <div class="col">
+                <div class="my-3">
+                    <div class="bg-light d-flex justify-content-between align-items-center border-bottom">
+                        <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                            <a n:href="Brands:edit" class="btn btn-success btn-sm">Create new Brand</a>
+                        </div>
+                        <div class="col-2">
+                            <p class="ms-2 my-2">Limit per page</p>
+                            <a n:foreach="[5, 10, 20] as $limit"
+                                n:href="Brands:default  limit => $limit, page => $paginator->page, sorting => $sorting, direction => $direction"
+                                class="link {if $limit == $paginator->itemsPerPage}active{/if}"
+                                aria-current="true">
+                                {$limit}
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            {if $paginator->pageCount !== 1}
+                            <p class="my-2">Pages</p>
+                            <a n:foreach="range(1, $paginator->pageCount) as $page"
+                                n:href="Brands:default  limit => $paginator->itemsPerPage, page => $page, sorting => 'code', direction => 'ASC'"
+                                class="link {if $page == $paginator->page}active{/if}"
+                                aria-current="true">
+                                {$page}
+                            </a>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                {if count($brands)}
+                    <table class="w-100 table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Code</th>
+                            <th>Name
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_name', direction => 'ASC'"><span>&#8593;</span></a>
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_name', direction => 'DESC'"><span>&#8595;</span></a>
+                            </th>
+                            <th>Date added
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_created', direction => 'ASC'"><span>&#8593;</span></a>
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_created', direction => 'DESC'"><span>&#8595;</span></a>
+                            </th>
+                            <th>Added by</th>
+                            <th>Date edited
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_edited', direction => 'ASC'"><span>&#8593;</span></a>
+                                <a n:href="Brands:default limit => $paginator->itemsPerPage, sorting => 'brand_edited', direction => 'DESC'"><span>&#8595;</span></a>
+                            </th>
+                            <th>Edited by</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr n:foreach="$brands as $brand">
+                            <td>{$brand->id}</td>
+                            <td>{$brand->code}</td>
+                            <td>{$brand->name}</td>
+                            <td>{$brand->created}</td>
+                            <td>{$brand->createdBy->name}</td>
+                            <td>{$brand->edited}</td>
+                            <td>{ifset $brand->editedBy}{$brand->editedBy->name}{/ifset}</td>
+                            <td>
+                                <a n:href="Brands:edit  id => $brand->id" class="btn btn-primary button">
+                                    Edit
+                                </a>
+                                <a n:href="Brands:delete  id => $brand->id"
+                                    onclick="return confirm('Are you sure?')"
+                                    class="btn btn-primary button bg-red">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {else}
+                    <H2>Nothing to show</H2>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+{/block content}

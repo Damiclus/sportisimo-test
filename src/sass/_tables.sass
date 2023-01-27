@@ -1,0 +1,34 @@
+.table.at-table
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04)
+  border: 1px solid #e5e5e5
+
+  td, th
+    &.w-date
+      width: 230px
+    &.w-btn
+      width: 120px
+
+  thead td,
+  tfoot td
+    padding: .45rem .75rem
+
+  tbody tr:hover
+    .row-actions
+      left: 0
+
+  .row-sm
+    width: 10%
+
+  .row-actions
+    color: #ddd
+    font-size: 13px
+    padding: 2px 0 0
+    position: relative
+    left: -999999rem
+
+    .dropdown
+      display: inline-flex
+
+  .title
+    a
+      font-weight: bolder

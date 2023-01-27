@@ -1,0 +1,7 @@
+.idea
+app/config/common.neon
+database/data
+vendor
+logs
+composer.lock
+node_modules
